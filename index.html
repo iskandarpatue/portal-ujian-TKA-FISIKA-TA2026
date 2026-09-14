@@ -21,6 +21,12 @@
       user-select: none;
     }
 
+    /* Pastikan kolom input tetap bisa diketik normal */
+    input {
+      -webkit-user-select: auto;
+      user-select: auto;
+    }
+
     body, html {
       width: 100%;
       height: 100%;
@@ -61,7 +67,47 @@
       font-size: 0.9rem;
       color: #64748b;
       line-height: 1.5;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+    }
+
+    /* Input Token Pengawas */
+    .token-box {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .token-box label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .token-box input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-align: center;
+      letter-spacing: 2px;
+      font-weight: bold;
+      text-transform: uppercase;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .token-box input:focus {
+      border-color: var(--primary);
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.8rem;
+      margin-top: 6px;
+      text-align: center;
+      font-weight: 600;
     }
 
     .btn {
@@ -163,22 +209,29 @@
       <h2>Ujian Online Terkunci</h2>
       <p>
         Ujian akan berjalan dalam <b>Mode Layar Penuh</b>.<br><br>
-        Dilarang beralih aplikasi, membuka notifikasi, atau keluar layar selama ujian berlangsung. Pelanggaran tercatat otomatis.
+        Dilarang beralih aplikasi, membuka notifikasi, atau menutup layar. Jika melanggar, ujian akan terkunci dan membutuhkan token pengawas.
       </p>
       <button class="btn" onclick="startExam()">Mulai Ujian Sekarang</button>
     </div>
   </div>
 
-  <!-- 2. Modal Peringatan Pelanggaran -->
+  <!-- 2. Modal Peringatan Pelanggaran (Wajib Token) -->
   <div id="warningModal" class="overlay hidden">
     <div class="card">
-      <h2 style="color: var(--danger);">⚠️ PERINGATAN!</h2>
-      <p id="warningText">Terdeteksi meninggalkan halaman ujian!</p>
-      <button class="btn btn-danger" onclick="resumeExam()">Kembali ke Ujian</button>
+      <h2 style="color: var(--danger);">⚠️ UJIAN TERKUNCI!</h2>
+      <p id="warningText">Terdeteksi meninggalkan halaman ujian.</p>
+      
+      <div class="token-box">
+        <label for="inputToken">Masukkan Token Pengawas:</label>
+        <input type="text" id="inputToken" placeholder="TOKEN" autocomplete="off">
+        <p id="tokenError" class="error-msg hidden">Token salah! Hubungi pengawas.</p>
+      </div>
+
+      <button class="btn btn-danger" onclick="unlockExam()">Buka Kunci Ujian</button>
     </div>
   </div>
 
-  <!-- 3. Modal Ujian Terkunci (Selesai/Diskualifikasi) -->
+  <!-- 3. Modal Ujian Dihentikan Total -->
   <div id="lockScreen" class="overlay hidden">
     <div class="card">
       <h2 style="color: var(--danger);">AKSES DITUTUP</h2>
@@ -189,7 +242,7 @@
   <!-- 4. Antarmuka Ujian -->
   <header>
     <div class="header-info">
-      <span class="exam-title">Ujian Online</span>
+      <span class="exam-title">Ujian Fisika</span>
       <span class="violation-badge" id="violationText">Pelanggaran: 0/3</span>
     </div>
     <div class="timer-badge" id="timer">60:00</div>
@@ -205,8 +258,9 @@
 
   <script>
     // === KONFIGURASI UJIAN ===
-    let examDurationMinutes = 60;   // Durasi waktu ujian dalam menit
-    const maxViolations = 3;        // Batas maksimal peringatan sebelum akun terkunci
+    const PROCTOR_TOKEN = "TKAFISIKA2026"; // Token pengawas
+    let examDurationMinutes = 60;          // Durasi ujian (menit)
+    const maxViolations = 3;               // Batas maksimal pelanggaran
 
     let timeRemaining = examDurationMinutes * 60;
     let violationCount = 0;
@@ -221,8 +275,10 @@
     const timerDisplay = document.getElementById('timer');
     const violationText = document.getElementById('violationText');
     const warningText = document.getElementById('warningText');
+    const inputToken = document.getElementById('inputToken');
+    const tokenError = document.getElementById('tokenError');
 
-    // 1. Memulai Ujian & Mengaktifkan Fullscreen
+    // 1. Memulai Ujian & Fullscreen
     function startExam() {
       const docEl = document.documentElement;
       
@@ -237,7 +293,7 @@
       startTimer();
     }
 
-    // 2. Logika Hitung Mundur (Timer)
+    // 2. Logika Timer
     function startTimer() {
       timerInterval = setInterval(() => {
         if (timeRemaining <= 0) {
@@ -269,25 +325,40 @@
       if (violationCount >= maxViolations) {
         finishExam(`Akses ditutup! Anda telah mencapai batas maksimal pelanggaran (${maxViolations} kali).`);
       } else {
-        warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Peringatan ke-<b>${violationCount}</b> dari ${maxViolations}. Ujian akan terkunci jika Anda mengulanginya lagi!`;
+        warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Pelanggaran ke-<b>${violationCount}</b> dari ${maxViolations}. Minta pengawas memasukkan token untuk membuka kembali.`;
+        
+        // Reset input token
+        inputToken.value = "";
+        tokenError.classList.add('hidden');
         warningModal.classList.remove('hidden');
       }
     }
 
-    // 4. Melanjutkan Ujian Setelah Peringatan
-    function resumeExam() {
-      const docEl = document.documentElement;
-      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-        if (docEl.requestFullscreen) {
-          docEl.requestFullscreen().catch(() => {});
-        } else if (docEl.webkitRequestFullscreen) {
-          docEl.webkitRequestFullscreen();
+    // 4. Verifikasi Token Pengawas & Buka Kunci
+    function unlockExam() {
+      const enteredToken = inputToken.value.trim().toUpperCase();
+
+      if (enteredToken === PROCTOR_TOKEN) {
+        tokenError.classList.add('hidden');
+        warningModal.classList.add('hidden');
+
+        // Kembalikan ke mode Fullscreen
+        const docEl = document.documentElement;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          if (docEl.requestFullscreen) {
+            docEl.requestFullscreen().catch(() => {});
+          } else if (docEl.webkitRequestFullscreen) {
+            docEl.webkitRequestFullscreen();
+          }
         }
+      } else {
+        tokenError.classList.remove('hidden');
+        inputToken.value = "";
+        inputToken.focus();
       }
-      warningModal.classList.add('hidden');
     }
 
-    // 5. Menghentikan Ujian Secara Permanen
+    // 5. Menghentikan Ujian Permanen
     function finishExam(message) {
       isExamActive = false;
       clearInterval(timerInterval);
@@ -306,14 +377,14 @@
 
     // === DETEKSI KECURANGAN ===
 
-    // Deteksi keluar tab / minimalkan browser
+    // Deteksi keluar tab / ganti aplikasi
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && isExamActive) {
         recordViolation("Meninggalkan tab atau membuka aplikasi lain");
       }
     });
 
-    // Deteksi keluar layar penuh
+    // Deteksi keluar mode Fullscreen
     document.addEventListener('fullscreenchange', handleFullscreenExit);
     document.addEventListener('webkitfullscreenchange', handleFullscreenExit);
 
@@ -324,7 +395,7 @@
       }
     }
 
-    // Mencegah Klik Kanan
+    // Blokir klik kanan / tahan layar
     document.addEventListener('contextmenu', (e) => e.preventDefault());
   </script>
 </body>
