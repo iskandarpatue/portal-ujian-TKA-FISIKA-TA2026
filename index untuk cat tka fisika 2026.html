@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Portal Ujian Online Terkunci</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --bg-header: #1e293b;
+      --text-header: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f1f5f9;
+    }
+
+    /* === LAYAR AWAL & MODAL === */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 9999;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h2 {
+      margin-bottom: 12px;
+      color: #0f172a;
+      font-size: 1.25rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+    }
+
+    /* === HEADER UJIAN === */
+    header {
+      height: 60px;
+      background-color: var(--bg-header);
+      color: var(--text-header);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exam-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px;
+    }
+
+    .violation-badge {
+      font-size: 0.75rem;
+      color: #f87171;
+      font-weight: bold;
+    }
+
+    .timer-badge {
+      background: #334155;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-family: monospace;
+      font-size: 1rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .timer-warning {
+      background: var(--danger);
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { opacity: 1; }
+      to { opacity: 0.6; }
+    }
+
+    /* === AREA GOOGLE FORM === */
+    .form-container {
+      width: 100%;
+      height: calc(100% - 60px);
+      position: relative;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Layar Konfirmasi Awal -->
+  <div id="startScreen" class="overlay">
+    <div class="card">
+      <h2>Ujian Online Terkunci</h2>
+      <p>
+        Ujian akan berjalan dalam <b>Mode Layar Penuh</b>.<br><br>
+        Dilarang beralih aplikasi, membuka notifikasi, atau keluar layar selama ujian berlangsung. Pelanggaran tercatat otomatis.
+      </p>
+      <button class="btn" onclick="startExam()">Mulai Ujian Sekarang</button>
+    </div>
+  </div>
+
+  <!-- 2. Modal Peringatan Pelanggaran -->
+  <div id="warningModal" class="overlay hidden">
+    <div class="card">
+      <h2 style="color: var(--danger);">⚠️ PERINGATAN!</h2>
+      <p id="warningText">Terdeteksi meninggalkan halaman ujian!</p>
+      <button class="btn btn-danger" onclick="resumeExam()">Kembali ke Ujian</button>
+    </div>
+  </div>
+
+  <!-- 3. Modal Ujian Terkunci (Selesai/Diskualifikasi) -->
+  <div id="lockScreen" class="overlay hidden">
+    <div class="card">
+      <h2 style="color: var(--danger);">AKSES DITUTUP</h2>
+      <p id="lockMessage">Ujian Anda telah dihentikan oleh sistem.</p>
+    </div>
+  </div>
+
+  <!-- 4. Antarmuka Ujian -->
+  <header>
+    <div class="header-info">
+      <span class="exam-title">Ujian Online</span>
+      <span class="violation-badge" id="violationText">Pelanggaran: 0/3</span>
+    </div>
+    <div class="timer-badge" id="timer">60:00</div>
+  </header>
+
+  <div class="form-container">
+    <iframe 
+      id="examFrame" 
+      src="https://forms.gle/6pYtwMAsddKuzfTN9">
+      Memuat formulir ujian...
+    </iframe>
+  </div>
+
+  <script>
+    // === KONFIGURASI UJIAN ===
+    let examDurationMinutes = 60;   // Durasi waktu ujian dalam menit
+    const maxViolations = 3;        // Batas maksimal peringatan sebelum akun terkunci
+
+    let timeRemaining = examDurationMinutes * 60;
+    let violationCount = 0;
+    let timerInterval = null;
+    let isExamActive = false;
+
+    // Elemen DOM
+    const startScreen = document.getElementById('startScreen');
+    const warningModal = document.getElementById('warningModal');
+    const lockScreen = document.getElementById('lockScreen');
+    const lockMessage = document.getElementById('lockMessage');
+    const timerDisplay = document.getElementById('timer');
+    const violationText = document.getElementById('violationText');
+    const warningText = document.getElementById('warningText');
+
+    // 1. Memulai Ujian & Mengaktifkan Fullscreen
+    function startExam() {
+      const docEl = document.documentElement;
+      
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().catch(() => {});
+      } else if (docEl.webkitRequestFullscreen) {
+        docEl.webkitRequestFullscreen();
+      }
+
+      startScreen.classList.add('hidden');
+      isExamActive = true;
+      startTimer();
+    }
+
+    // 2. Logika Hitung Mundur (Timer)
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          finishExam("Waktu pengerjaan ujian telah habis!");
+          return;
+        }
+
+        timeRemaining--;
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+
+        timerDisplay.textContent = 
+          `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        if (timeRemaining <= 300) {
+          timerDisplay.classList.add('timer-warning');
+        }
+      }, 1000);
+    }
+
+    // 3. Pencatatan Pelanggaran
+    function recordViolation(reason) {
+      if (!isExamActive) return;
+
+      violationCount++;
+      violationText.textContent = `Pelanggaran: ${violationCount}/${maxViolations}`;
+
+      if (violationCount >= maxViolations) {
+        finishExam(`Akses ditutup! Anda telah mencapai batas maksimal pelanggaran (${maxViolations} kali).`);
+      } else {
+        warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Peringatan ke-<b>${violationCount}</b> dari ${maxViolations}. Ujian akan terkunci jika Anda mengulanginya lagi!`;
+        warningModal.classList.remove('hidden');
+      }
+    }
+
+    // 4. Melanjutkan Ujian Setelah Peringatan
+    function resumeExam() {
+      const docEl = document.documentElement;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen().catch(() => {});
+        } else if (docEl.webkitRequestFullscreen) {
+          docEl.webkitRequestFullscreen();
+        }
+      }
+      warningModal.classList.add('hidden');
+    }
+
+    // 5. Menghentikan Ujian Secara Permanen
+    function finishExam(message) {
+      isExamActive = false;
+      clearInterval(timerInterval);
+      warningModal.classList.add('hidden');
+      
+      const frame = document.getElementById('examFrame');
+      if (frame) frame.remove();
+
+      lockMessage.textContent = message;
+      lockScreen.classList.remove('hidden');
+
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    // === DETEKSI KECURANGAN ===
+
+    // Deteksi keluar tab / minimalkan browser
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && isExamActive) {
+        recordViolation("Meninggalkan tab atau membuka aplikasi lain");
+      }
+    });
+
+    // Deteksi keluar layar penuh
+    document.addEventListener('fullscreenchange', handleFullscreenExit);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenExit);
+
+    function handleFullscreenExit() {
+      const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+      if (!isFullscreen && isExamActive && warningModal.classList.contains('hidden')) {
+        recordViolation("Menutup mode layar penuh (Fullscreen)");
+      }
+    }
+
+    // Mencegah Klik Kanan
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+  </script>
+</body>
+</html>
