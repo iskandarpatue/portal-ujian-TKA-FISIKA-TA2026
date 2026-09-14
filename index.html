@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Portal Ujian CBT Fisika</title>
+  <title>Portal CBT - TKA Fisika 2026</title>
   <style>
     :root {
-      --primary: #0284c7;
-      --primary-glow: rgba(56, 189, 248, 0.4);
-      --accent: #38bdf8;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --accent: #0284c7;
+      --bg-canvas: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
       --danger: #ef4444;
-      --warning: #f59e0b;
-      --bg-dark: #090d16;
-      --surface: rgba(15, 23, 42, 0.85);
-      --surface-border: rgba(56, 189, 248, 0.2);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --danger-soft: #fef2f2;
+      --danger-border: #fecaca;
     }
 
     * {
@@ -36,33 +37,32 @@
       height: 100%;
       overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Plus Jakarta Sans", sans-serif;
-      background-color: var(--bg-dark);
+      background-color: var(--bg-canvas);
       color: var(--text-main);
     }
 
-    /* === BACKGROUND FISIKA ABSTRAK === */
-    .physics-bg {
+    /* === BACKGROUND CERAH FISIKA === */
+    .bg-mesh {
       position: absolute;
       inset: 0;
-      background-image: 
-        radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-        linear-gradient(to bottom, #090d16, #0f172a);
+      background: 
+        radial-gradient(circle at 10% 15%, rgba(186, 230, 253, 0.45) 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(224, 231, 255, 0.5) 0%, transparent 45%),
+        #f8fafc;
       z-index: 0;
     }
 
-    /* Grid Pola Partikel */
-    .grid-pattern {
+    .bg-grid {
       position: absolute;
       inset: 0;
-      background-size: 30px 30px;
+      background-size: 28px 28px;
       background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
       z-index: 1;
     }
 
-    /* === OVERLAY & CONTAINER === */
+    /* === OVERLAY MODAL === */
     .overlay {
       position: fixed;
       inset: 0;
@@ -71,38 +71,41 @@
       align-items: center;
       padding: 20px;
       z-index: 9999;
-      background: rgba(9, 13, 22, 0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     .card {
       position: relative;
-      background: var(--surface);
-      border: 1px solid var(--surface-border);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
       padding: 28px 22px;
-      border-radius: 20px;
+      border-radius: 22px;
       max-width: 420px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px var(--primary-glow);
+      box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(0, 0, 0, 0.04);
       z-index: 10;
     }
 
-    /* === ATOM ANIMATION (SVG) === */
-    .atom-container {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 16px auto;
-      position: relative;
+    /* === ANIMASI ATOM (LIGHT MODE) === */
+    .atom-badge {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 14px auto;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
+      box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.15);
     }
 
     .atom-svg {
-      width: 100%;
-      height: 100%;
+      width: 52px;
+      height: 52px;
       animation: rotateAtom 12s linear infinite;
     }
 
@@ -114,43 +117,43 @@
     .sub-badge {
       display: inline-block;
       padding: 4px 12px;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
       border-radius: 20px;
-      color: var(--accent);
+      color: #0369a1;
       font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
       margin-bottom: 8px;
     }
 
     .card h1 {
-      font-size: 1.4rem;
+      font-size: 1.45rem;
       font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 6px;
+      color: #0f172a;
       letter-spacing: -0.5px;
+      margin-bottom: 6px;
     }
 
     .card p.subtitle {
       font-size: 0.85rem;
       color: var(--text-muted);
       line-height: 1.4;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    /* Info Grid Fisika */
+    /* Info Grid */
     .info-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .info-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
       border-radius: 12px;
       padding: 10px;
       text-align: left;
@@ -158,15 +161,16 @@
 
     .info-box span.label {
       display: block;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
-      margin-bottom: 3px;
+      font-weight: 600;
+      margin-bottom: 2px;
     }
 
     .info-box span.value {
       font-size: 0.85rem;
       font-weight: 700;
-      color: #e2e8f0;
+      color: #1e293b;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -174,21 +178,21 @@
 
     /* Rules List */
     .rules-list {
-      background: rgba(239, 68, 68, 0.05);
-      border: 1px dashed rgba(239, 68, 68, 0.25);
+      background: #fff1f2;
+      border: 1px dashed #fecdd3;
       border-radius: 12px;
       padding: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       text-align: left;
     }
 
     .rules-item {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
+      gap: 6px;
       font-size: 0.78rem;
-      color: #fca5a5;
-      margin-bottom: 6px;
+      color: #be123c;
+      margin-bottom: 5px;
       line-height: 1.35;
     }
 
@@ -199,16 +203,15 @@
     /* Buttons */
     .btn-glow {
       width: 100%;
-      padding: 15px;
-      background: linear-gradient(135deg, #0284c7, #0369a1);
+      padding: 14px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: white;
       border: none;
       border-radius: 12px;
       font-size: 1rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+      box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.35);
       transition: all 0.2s ease;
       display: flex;
       justify-content: center;
@@ -218,12 +221,12 @@
 
     .btn-glow:active {
       transform: scale(0.98);
-      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
     }
 
     .btn-danger {
       background: linear-gradient(135deg, #dc2626, #b91c1c);
-      box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+      box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.35);
     }
 
     /* Input Token */
@@ -235,19 +238,19 @@
     .token-box label {
       display: block;
       font-size: 0.75rem;
-      font-weight: 600;
-      color: #cbd5e1;
+      font-weight: 700;
+      color: #334155;
       margin-bottom: 6px;
     }
 
     .token-box input {
       width: 100%;
-      padding: 14px;
-      background: rgba(15, 23, 42, 0.7);
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      padding: 13px;
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
       border-radius: 10px;
       font-size: 1.1rem;
-      color: #ffffff;
+      color: #0f172a;
       text-align: center;
       letter-spacing: 3px;
       font-weight: 800;
@@ -257,8 +260,9 @@
     }
 
     .token-box input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
     .error-msg {
@@ -269,18 +273,18 @@
       font-weight: 600;
     }
 
-    /* === HEADER UJIAN AKTIF === */
+    /* === HEADER UJIAN AKTIF (CERAH) === */
     header {
       height: 60px;
-      background: rgba(15, 23, 42, 0.95);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(8px);
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 16px;
       position: relative;
       z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     }
 
     .header-info {
@@ -297,44 +301,45 @@
     .exam-title {
       font-size: 0.85rem;
       font-weight: 700;
-      color: #f8fafc;
+      color: #0f172a;
     }
 
     .violation-badge {
       font-size: 0.7rem;
-      color: #f87171;
+      color: #dc2626;
       font-weight: 600;
     }
 
     .timer-badge {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
       padding: 6px 14px;
       border-radius: 20px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       font-size: 0.95rem;
       font-weight: 800;
-      color: var(--accent);
+      color: #1d4ed8;
       letter-spacing: 1px;
     }
 
     .timer-warning {
-      background: var(--danger);
+      background: #ef4444;
+      border-color: #dc2626;
       color: #ffffff;
       animation: pulse 1s infinite alternate;
     }
 
     @keyframes pulse {
       from { opacity: 1; }
-      to { opacity: 0.6; }
+      to { opacity: 0.65; }
     }
 
-    /* === AREA GOOGLE FORM === */
+    /* === AREA FORMULIR === */
     .form-container {
       width: 100%;
       height: calc(100% - 60px);
       position: relative;
-      background: #f8fafc;
+      background: #ffffff;
     }
 
     iframe {
@@ -350,69 +355,62 @@
 </head>
 <body>
 
-  <!-- Background Efek Fisika -->
-  <div class="physics-bg"></div>
-  <div class="grid-pattern"></div>
+  <!-- Latar Belakang Cerah -->
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
 
-  <!-- 1. Layar Beranda Ujian (Dashboard Awal) -->
+  <!-- 1. Beranda Ujian / Start Screen -->
   <div id="startScreen" class="overlay">
     <div class="card">
       
-      <!-- Animasi Atom Fisika -->
-      <div class="atom-container">
+      <!-- Ikon Atom Fisika (Warna Vibrant untuk Layar Cerah) -->
+      <div class="atom-badge">
         <svg class="atom-svg" viewBox="0 0 100 100">
-          <!-- Inti Atom (Nucleus) -->
-          <circle cx="50" cy="50" r="7" fill="#38bdf8" filter="drop-shadow(0 0 4px #38bdf8)"/>
-          
-          <!-- Orbit Elektron 1 -->
-          <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#38bdf8" stroke-width="1.8" opacity="0.6" />
-          <circle cx="92" cy="50" r="3.5" fill="#ffffff" />
-
-          <!-- Orbit Elektron 2 (Diputar 60 Derajat) -->
-          <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#818cf8" stroke-width="1.8" opacity="0.6" transform="rotate(60 50 50)" />
-          
-          <!-- Orbit Elektron 3 (Diputar 120 Derajat) -->
-          <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#c084fc" stroke-width="1.8" opacity="0.6" transform="rotate(120 50 50)" />
+          <circle cx="50" cy="50" r="7" fill="#2563eb" />
+          <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#0284c7" stroke-width="2.2" />
+          <circle cx="90" cy="50" r="3.5" fill="#0284c7" />
+          <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#4f46e5" stroke-width="2.2" transform="rotate(60 50 50)" />
+          <ellipse cx="50" cy="50" rx="40" ry="15" fill="none" stroke="#7c3aed" stroke-width="2.2" transform="rotate(120 50 50)" />
         </svg>
       </div>
 
-      <span class="sub-badge">Computer-Based Test</span>
-      <h1>EVALUASI FISIKA</h1>
-      <p class="subtitle">Kerjakan soal secara jujur, cermat, dan fokus.</p>
+      <span class="sub-badge">Tes Kemampuan Akademik</span>
+      <h1>TKA FISIKA 2026</h1>
+      <p class="subtitle">Kerjakan soal dengan cermat, tenang, dan menjunjung sportivitas.</p>
 
-      <!-- Panel Info Ujian -->
+      <!-- Informasi Ujian -->
       <div class="info-grid">
         <div class="info-box">
           <span class="label">MATA PELAJARAN</span>
           <span class="value">⚛️ Fisika</span>
         </div>
         <div class="info-box">
-          <span class="label">ALOKASI WAKTU</span>
+          <span class="label">DURASI WAKTU</span>
           <span class="value">⏱️ 60 Menit</span>
         </div>
         <div class="info-box">
           <span class="label">SISTEM UJIAN</span>
-          <span class="value">🔒 Mode Terkunci</span>
+          <span class="value">🔒 Terkunci (Kiosk)</span>
         </div>
         <div class="info-box">
-          <span class="label">MAKS. TOLERANSI</span>
-          <span class="value">⚠️ 3x Peringatan</span>
+          <span class="label">MAKS. PERINGATAN</span>
+          <span class="value">⚠️ 3x Toleransi</span>
         </div>
       </div>
 
-      <!-- Aturan Ujian Ringkas -->
+      <!-- Aturan Ujian -->
       <div class="rules-list">
         <div class="rules-item">
           <span>•</span>
-          <span>Layar akan otomatis terkunci ke <b>Mode Layar Penuh</b>.</span>
+          <span>Layar otomatis beralih ke <b>Mode Layar Penuh</b>.</span>
         </div>
         <div class="rules-item">
           <span>•</span>
-          <span>Dilarang beralih tab, membalas chat, atau keluar browser.</span>
+          <span>Dilarang beralih tab, membalas chat, atau keluar aplikasi.</span>
         </div>
         <div class="rules-item">
           <span>•</span>
-          <span>Pelanggaran memerlukan <b>Token Pengawas</b> untuk membuka.</span>
+          <span>Ujian terkunci jika melanggar dan memerlukan <b>Token Pengawas</b>.</span>
         </div>
       </div>
 
@@ -426,15 +424,15 @@
 
   <!-- 2. Modal Peringatan Pelanggaran (Wajib Token) -->
   <div id="warningModal" class="overlay hidden">
-    <div class="card" style="border-color: rgba(239, 68, 68, 0.4);">
-      <div style="font-size: 2.5rem; margin-bottom: 8px;">⚠️</div>
-      <h1 style="color: #f87171; font-size: 1.25rem;">UJIAN TERKUNCI!</h1>
-      <p id="warningText" class="subtitle" style="margin-top: 6px; color: #cbd5e1;">Terdeteksi meninggalkan halaman ujian.</p>
+    <div class="card" style="border-color: #fca5a5;">
+      <div style="font-size: 2.2rem; margin-bottom: 6px;">⚠️</div>
+      <h1 style="color: #dc2626; font-size: 1.25rem;">UJIAN TERKUNCI!</h1>
+      <p id="warningText" class="subtitle" style="margin-top: 6px; color: #475569;">Terdeteksi meninggalkan halaman ujian.</p>
       
       <div class="token-box">
         <label for="inputToken">MASUKKAN TOKEN PENGAWAS:</label>
         <input type="text" id="inputToken" placeholder="••••••••••••" autocomplete="off">
-        <p id="tokenError" class="error-msg hidden">Token tidak sesuai! Panggil pengawas.</p>
+        <p id="tokenError" class="error-msg hidden">Token tidak sesuai! Silakan panggil pengawas.</p>
       </div>
 
       <button class="btn-glow btn-danger" onclick="unlockExam()">Buka Kunci Layar</button>
@@ -443,36 +441,36 @@
 
   <!-- 3. Modal Ujian Dihentikan Total -->
   <div id="lockScreen" class="overlay hidden">
-    <div class="card" style="border-color: rgba(239, 68, 68, 0.5);">
-      <div style="font-size: 2.5rem; margin-bottom: 8px;">🛑</div>
-      <h1 style="color: #f87171; font-size: 1.3rem;">AKSES DITUTUP</h1>
+    <div class="card" style="border-color: #fca5a5;">
+      <div style="font-size: 2.2rem; margin-bottom: 6px;">🛑</div>
+      <h1 style="color: #dc2626; font-size: 1.3rem;">AKSES DITUTUP</h1>
       <p id="lockMessage" class="subtitle" style="margin-top: 8px;">Ujian Anda telah dihentikan otomatis oleh sistem.</p>
     </div>
   </div>
 
-  <!-- 4. Antarmuka Header Ujian Aktif -->
+  <!-- 4. Header Ujian Aktif -->
   <header>
     <div class="header-info">
       <!-- Mini Atom Icon -->
       <svg width="22" height="22" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="14" fill="#38bdf8"/>
-        <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#38bdf8" stroke-width="5" />
-        <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#818cf8" stroke-width="5" transform="rotate(60 50 50)" />
+        <circle cx="50" cy="50" r="14" fill="#2563eb"/>
+        <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#0284c7" stroke-width="6" />
+        <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#7c3aed" stroke-width="6" transform="rotate(60 50 50)" />
       </svg>
       <div class="header-titles">
-        <span class="exam-title">Evaluasi Fisika</span>
+        <span class="exam-title">TKA Fisika 2026</span>
         <span class="violation-badge" id="violationText">Pelanggaran: 0/3</span>
       </div>
     </div>
     <div class="timer-badge" id="timer">60:00</div>
   </header>
 
-  <!-- Area Google Form -->
+  <!-- Area Formulir Ujian -->
   <div class="form-container">
     <iframe 
       id="examFrame" 
       src="https://forms.gle/6pYtwMAsddKuzfTN9">
-      Memuat formulir evaluasi fisika...
+      Memuat formulir TKA Fisika 2026...
     </iframe>
   </div>
 
@@ -498,7 +496,7 @@
     const inputToken = document.getElementById('inputToken');
     const tokenError = document.getElementById('tokenError');
 
-    // 1. Memulai Ujian & Fullscreen
+    // 1. Memulai Ujian & Mengaktifkan Layar Penuh
     function startExam() {
       const docEl = document.documentElement;
       
@@ -513,7 +511,7 @@
       startTimer();
     }
 
-    // 2. Logika Timer
+    // 2. Logika Hitung Mundur Waktu
     function startTimer() {
       timerInterval = setInterval(() => {
         if (timeRemaining <= 0) {
@@ -545,7 +543,7 @@
       if (violationCount >= maxViolations) {
         finishExam(`Ujian Dihentikan! Anda telah mencapai batas maksimal (${maxViolations}x) pelanggaran.`);
       } else {
-        warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Pelanggaran ke-<b>${violationCount}</b> dari ${maxViolations}. Panggil pengawas untuk membuka kunci.`;
+        warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Pelanggaran ke-<b>${violationCount}</b> dari ${maxViolations}. Panggil pengawas untuk membuka kunci kembali.`;
         
         inputToken.value = "";
         tokenError.classList.add('hidden');
@@ -561,7 +559,7 @@
         tokenError.classList.add('hidden');
         warningModal.classList.add('hidden');
 
-        // Balik ke mode fullscreen
+        // Balikkan ke fullscreen
         const docEl = document.documentElement;
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
           if (docEl.requestFullscreen) {
@@ -603,7 +601,7 @@
       }
     });
 
-    // Deteksi keluar Fullscreen
+    // Deteksi keluar layar penuh
     document.addEventListener('fullscreenchange', handleFullscreenExit);
     document.addEventListener('webkitfullscreenchange', handleFullscreenExit);
 
