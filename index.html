@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Portal Ujian Online Terkunci</title>
+  <title>Portal Ujian CBT Fisika</title>
   <style>
     :root {
-      --primary: #2563eb;
-      --danger: #dc2626;
+      --primary: #0284c7;
+      --primary-glow: rgba(56, 189, 248, 0.4);
+      --accent: #38bdf8;
+      --danger: #ef4444;
       --warning: #f59e0b;
-      --bg-header: #1e293b;
-      --text-header: #f8fafc;
+      --bg-dark: #090d16;
+      --surface: rgba(15, 23, 42, 0.85);
+      --surface-border: rgba(56, 189, 248, 0.2);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
     }
 
     * {
@@ -21,7 +26,6 @@
       user-select: none;
     }
 
-    /* Pastikan kolom input tetap bisa diketik normal */
     input {
       -webkit-user-select: auto;
       user-select: auto;
@@ -31,75 +35,230 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Plus Jakarta Sans", sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
     }
 
-    /* === LAYAR AWAL & MODAL === */
+    /* === BACKGROUND FISIKA ABSTRAK === */
+    .physics-bg {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+        linear-gradient(to bottom, #090d16, #0f172a);
+      z-index: 0;
+    }
+
+    /* Grid Pola Partikel */
+    .grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-size: 30px 30px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      z-index: 1;
+    }
+
+    /* === OVERLAY & CONTAINER === */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.95);
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
       z-index: 9999;
-      text-align: center;
+      background: rgba(9, 13, 22, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .card {
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      max-width: 400px;
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      padding: 28px 22px;
+      border-radius: 20px;
+      max-width: 420px;
       width: 100%;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 25px var(--primary-glow);
+      z-index: 10;
     }
 
-    .card h2 {
-      margin-bottom: 12px;
-      color: #0f172a;
-      font-size: 1.25rem;
+    /* === ATOM ANIMATION (SVG) === */
+    .atom-container {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 16px auto;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .card p {
-      font-size: 0.9rem;
-      color: #64748b;
-      line-height: 1.5;
-      margin-bottom: 16px;
+    .atom-svg {
+      width: 100%;
+      height: 100%;
+      animation: rotateAtom 12s linear infinite;
     }
 
-    /* Input Token Pengawas */
+    @keyframes rotateAtom {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .sub-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px;
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .card h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .card p.subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    /* Info Grid Fisika */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .info-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .info-box span.label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .info-box span.value {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Rules List */
+    .rules-list {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px dashed rgba(239, 68, 68, 0.25);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .rules-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: #fca5a5;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .rules-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Buttons */
+    .btn-glow {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-glow:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+    }
+
+    /* Input Token */
     .token-box {
-      margin-bottom: 16px;
+      margin: 16px 0;
       text-align: left;
     }
 
     .token-box label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      color: #334155;
+      color: #cbd5e1;
       margin-bottom: 6px;
     }
 
     .token-box input {
       width: 100%;
-      padding: 12px;
-      border: 2px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 1rem;
+      padding: 14px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      font-size: 1.1rem;
+      color: #ffffff;
       text-align: center;
-      letter-spacing: 2px;
-      font-weight: bold;
+      letter-spacing: 3px;
+      font-weight: 800;
       text-transform: uppercase;
       outline: none;
       transition: border-color 0.2s;
     }
 
     .token-box input:focus {
-      border-color: var(--primary);
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
     }
 
     .error-msg {
@@ -110,71 +269,58 @@
       font-weight: 600;
     }
 
-    .btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn-danger {
-      background: var(--danger);
-    }
-
-    /* === HEADER UJIAN === */
+    /* === HEADER UJIAN AKTIF === */
     header {
       height: 60px;
-      background-color: var(--bg-header);
-      color: var(--text-header);
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 16px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 100;
     }
 
     .header-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-titles {
       display: flex;
       flex-direction: column;
     }
 
     .exam-title {
       font-size: 0.85rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 160px;
+      font-weight: 700;
+      color: #f8fafc;
     }
 
     .violation-badge {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: #f87171;
-      font-weight: bold;
+      font-weight: 600;
     }
 
     .timer-badge {
-      background: #334155;
-      padding: 6px 12px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 6px 14px;
       border-radius: 20px;
-      font-family: monospace;
-      font-size: 1rem;
-      font-weight: bold;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent);
       letter-spacing: 1px;
     }
 
     .timer-warning {
       background: var(--danger);
+      color: #ffffff;
       animation: pulse 1s infinite alternate;
     }
 
@@ -188,6 +334,7 @@
       width: 100%;
       height: calc(100% - 60px);
       position: relative;
+      background: #f8fafc;
     }
 
     iframe {
@@ -203,64 +350,137 @@
 </head>
 <body>
 
-  <!-- 1. Layar Konfirmasi Awal -->
+  <!-- Background Efek Fisika -->
+  <div class="physics-bg"></div>
+  <div class="grid-pattern"></div>
+
+  <!-- 1. Layar Beranda Ujian (Dashboard Awal) -->
   <div id="startScreen" class="overlay">
     <div class="card">
-      <h2>Ujian Online Terkunci</h2>
-      <p>
-        Ujian akan berjalan dalam <b>Mode Layar Penuh</b>.<br><br>
-        Dilarang beralih aplikasi, membuka notifikasi, atau menutup layar. Jika melanggar, ujian akan terkunci dan membutuhkan token pengawas.
-      </p>
-      <button class="btn" onclick="startExam()">Mulai Ujian Sekarang</button>
+      
+      <!-- Animasi Atom Fisika -->
+      <div class="atom-container">
+        <svg class="atom-svg" viewBox="0 0 100 100">
+          <!-- Inti Atom (Nucleus) -->
+          <circle cx="50" cy="50" r="7" fill="#38bdf8" filter="drop-shadow(0 0 4px #38bdf8)"/>
+          
+          <!-- Orbit Elektron 1 -->
+          <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#38bdf8" stroke-width="1.8" opacity="0.6" />
+          <circle cx="92" cy="50" r="3.5" fill="#ffffff" />
+
+          <!-- Orbit Elektron 2 (Diputar 60 Derajat) -->
+          <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#818cf8" stroke-width="1.8" opacity="0.6" transform="rotate(60 50 50)" />
+          
+          <!-- Orbit Elektron 3 (Diputar 120 Derajat) -->
+          <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#c084fc" stroke-width="1.8" opacity="0.6" transform="rotate(120 50 50)" />
+        </svg>
+      </div>
+
+      <span class="sub-badge">Computer-Based Test</span>
+      <h1>EVALUASI FISIKA</h1>
+      <p class="subtitle">Kerjakan soal secara jujur, cermat, dan fokus.</p>
+
+      <!-- Panel Info Ujian -->
+      <div class="info-grid">
+        <div class="info-box">
+          <span class="label">MATA PELAJARAN</span>
+          <span class="value">⚛️ Fisika</span>
+        </div>
+        <div class="info-box">
+          <span class="label">ALOKASI WAKTU</span>
+          <span class="value">⏱️ 60 Menit</span>
+        </div>
+        <div class="info-box">
+          <span class="label">SISTEM UJIAN</span>
+          <span class="value">🔒 Mode Terkunci</span>
+        </div>
+        <div class="info-box">
+          <span class="label">MAKS. TOLERANSI</span>
+          <span class="value">⚠️ 3x Peringatan</span>
+        </div>
+      </div>
+
+      <!-- Aturan Ujian Ringkas -->
+      <div class="rules-list">
+        <div class="rules-item">
+          <span>•</span>
+          <span>Layar akan otomatis terkunci ke <b>Mode Layar Penuh</b>.</span>
+        </div>
+        <div class="rules-item">
+          <span>•</span>
+          <span>Dilarang beralih tab, membalas chat, atau keluar browser.</span>
+        </div>
+        <div class="rules-item">
+          <span>•</span>
+          <span>Pelanggaran memerlukan <b>Token Pengawas</b> untuk membuka.</span>
+        </div>
+      </div>
+
+      <button class="btn-glow" onclick="startExam()">
+        <span>Mulai Ujian Fisika</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+
     </div>
   </div>
 
   <!-- 2. Modal Peringatan Pelanggaran (Wajib Token) -->
   <div id="warningModal" class="overlay hidden">
-    <div class="card">
-      <h2 style="color: var(--danger);">⚠️ UJIAN TERKUNCI!</h2>
-      <p id="warningText">Terdeteksi meninggalkan halaman ujian.</p>
+    <div class="card" style="border-color: rgba(239, 68, 68, 0.4);">
+      <div style="font-size: 2.5rem; margin-bottom: 8px;">⚠️</div>
+      <h1 style="color: #f87171; font-size: 1.25rem;">UJIAN TERKUNCI!</h1>
+      <p id="warningText" class="subtitle" style="margin-top: 6px; color: #cbd5e1;">Terdeteksi meninggalkan halaman ujian.</p>
       
       <div class="token-box">
-        <label for="inputToken">Masukkan Token Pengawas:</label>
-        <input type="text" id="inputToken" placeholder="TOKEN" autocomplete="off">
-        <p id="tokenError" class="error-msg hidden">Token salah! Hubungi pengawas.</p>
+        <label for="inputToken">MASUKKAN TOKEN PENGAWAS:</label>
+        <input type="text" id="inputToken" placeholder="••••••••••••" autocomplete="off">
+        <p id="tokenError" class="error-msg hidden">Token tidak sesuai! Panggil pengawas.</p>
       </div>
 
-      <button class="btn btn-danger" onclick="unlockExam()">Buka Kunci Ujian</button>
+      <button class="btn-glow btn-danger" onclick="unlockExam()">Buka Kunci Layar</button>
     </div>
   </div>
 
   <!-- 3. Modal Ujian Dihentikan Total -->
   <div id="lockScreen" class="overlay hidden">
-    <div class="card">
-      <h2 style="color: var(--danger);">AKSES DITUTUP</h2>
-      <p id="lockMessage">Ujian Anda telah dihentikan oleh sistem.</p>
+    <div class="card" style="border-color: rgba(239, 68, 68, 0.5);">
+      <div style="font-size: 2.5rem; margin-bottom: 8px;">🛑</div>
+      <h1 style="color: #f87171; font-size: 1.3rem;">AKSES DITUTUP</h1>
+      <p id="lockMessage" class="subtitle" style="margin-top: 8px;">Ujian Anda telah dihentikan otomatis oleh sistem.</p>
     </div>
   </div>
 
-  <!-- 4. Antarmuka Ujian -->
+  <!-- 4. Antarmuka Header Ujian Aktif -->
   <header>
     <div class="header-info">
-      <span class="exam-title">Ujian Fisika</span>
-      <span class="violation-badge" id="violationText">Pelanggaran: 0/3</span>
+      <!-- Mini Atom Icon -->
+      <svg width="22" height="22" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="14" fill="#38bdf8"/>
+        <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#38bdf8" stroke-width="5" />
+        <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#818cf8" stroke-width="5" transform="rotate(60 50 50)" />
+      </svg>
+      <div class="header-titles">
+        <span class="exam-title">Evaluasi Fisika</span>
+        <span class="violation-badge" id="violationText">Pelanggaran: 0/3</span>
+      </div>
     </div>
     <div class="timer-badge" id="timer">60:00</div>
   </header>
 
+  <!-- Area Google Form -->
   <div class="form-container">
     <iframe 
       id="examFrame" 
       src="https://forms.gle/6pYtwMAsddKuzfTN9">
-      Memuat formulir ujian...
+      Memuat formulir evaluasi fisika...
     </iframe>
   </div>
 
   <script>
-    // === KONFIGURASI UJIAN ===
-    const PROCTOR_TOKEN = "TKAFISIKA2026"; // Token pengawas
-    let examDurationMinutes = 60;          // Durasi ujian (menit)
-    const maxViolations = 3;               // Batas maksimal pelanggaran
+    // === KONFIGURASI SISTEM UJIAN ===
+    const PROCTOR_TOKEN = "TKAFISIKA2026"; 
+    let examDurationMinutes = 60;          
+    const maxViolations = 3;               
 
     let timeRemaining = examDurationMinutes * 60;
     let violationCount = 0;
@@ -298,7 +518,7 @@
       timerInterval = setInterval(() => {
         if (timeRemaining <= 0) {
           clearInterval(timerInterval);
-          finishExam("Waktu pengerjaan ujian telah habis!");
+          finishExam("Waktu pengerjaan ujian telah berakhir!");
           return;
         }
 
@@ -323,18 +543,17 @@
       violationText.textContent = `Pelanggaran: ${violationCount}/${maxViolations}`;
 
       if (violationCount >= maxViolations) {
-        finishExam(`Akses ditutup! Anda telah mencapai batas maksimal pelanggaran (${maxViolations} kali).`);
+        finishExam(`Ujian Dihentikan! Anda telah mencapai batas maksimal (${maxViolations}x) pelanggaran.`);
       } else {
-        warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Pelanggaran ke-<b>${violationCount}</b> dari ${maxViolations}. Minta pengawas memasukkan token untuk membuka kembali.`;
+        warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Pelanggaran ke-<b>${violationCount}</b> dari ${maxViolations}. Panggil pengawas untuk membuka kunci.`;
         
-        // Reset input token
         inputToken.value = "";
         tokenError.classList.add('hidden');
         warningModal.classList.remove('hidden');
       }
     }
 
-    // 4. Verifikasi Token Pengawas & Buka Kunci
+    // 4. Verifikasi Token Pengawas
     function unlockExam() {
       const enteredToken = inputToken.value.trim().toUpperCase();
 
@@ -342,7 +561,7 @@
         tokenError.classList.add('hidden');
         warningModal.classList.add('hidden');
 
-        // Kembalikan ke mode Fullscreen
+        // Balik ke mode fullscreen
         const docEl = document.documentElement;
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
           if (docEl.requestFullscreen) {
@@ -377,21 +596,21 @@
 
     // === DETEKSI KECURANGAN ===
 
-    // Deteksi keluar tab / ganti aplikasi
+    // Deteksi beralih aplikasi / tab minim
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && isExamActive) {
-        recordViolation("Meninggalkan tab atau membuka aplikasi lain");
+        recordViolation("Membuka aplikasi lain atau berganti layar");
       }
     });
 
-    // Deteksi keluar mode Fullscreen
+    // Deteksi keluar Fullscreen
     document.addEventListener('fullscreenchange', handleFullscreenExit);
     document.addEventListener('webkitfullscreenchange', handleFullscreenExit);
 
     function handleFullscreenExit() {
       const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
       if (!isFullscreen && isExamActive && warningModal.classList.contains('hidden')) {
-        recordViolation("Menutup mode layar penuh (Fullscreen)");
+        recordViolation("Menutup mode layar penuh");
       }
     }
 
