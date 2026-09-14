@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Portal CBT - TKA Fisika 2026</title>
+  
+  <!-- Font Kaligrafi Dancing Script & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --primary: #2563eb;
@@ -36,7 +42,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Plus Jakarta Sans", sans-serif;
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg-canvas);
       color: var(--text-main);
     }
@@ -74,13 +80,14 @@
       background: rgba(15, 23, 42, 0.4);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
+      overflow-y: auto;
     }
 
     .card {
       position: relative;
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 28px 22px;
+      padding: 26px 22px 20px 22px;
       border-radius: 22px;
       max-width: 420px;
       width: 100%;
@@ -91,9 +98,9 @@
 
     /* === ANIMASI ATOM (LIGHT MODE) === */
     .atom-badge {
-      width: 76px;
-      height: 76px;
-      margin: 0 auto 14px auto;
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 12px auto;
       background: #eff6ff;
       border: 1px solid #bfdbfe;
       border-radius: 50%;
@@ -104,8 +111,8 @@
     }
 
     .atom-svg {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       animation: rotateAtom 12s linear infinite;
     }
 
@@ -121,11 +128,11 @@
       border: 1px solid #bae6fd;
       border-radius: 20px;
       color: #0369a1;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 1.2px;
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .card h1 {
@@ -133,14 +140,14 @@
       font-weight: 800;
       color: #0f172a;
       letter-spacing: -0.5px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .card p.subtitle {
       font-size: 0.85rem;
       color: var(--text-muted);
       line-height: 1.4;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     /* Info Grid */
@@ -148,7 +155,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .info-box {
@@ -181,8 +188,8 @@
       background: #fff1f2;
       border: 1px dashed #fecdd3;
       border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 22px;
+      padding: 11px;
+      margin-bottom: 18px;
       text-align: left;
     }
 
@@ -190,9 +197,9 @@
       display: flex;
       align-items: flex-start;
       gap: 6px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: #be123c;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       line-height: 1.35;
     }
 
@@ -200,7 +207,7 @@
       margin-bottom: 0;
     }
 
-    /* Buttons */
+    /* Tombol */
     .btn-glow {
       width: 100%;
       padding: 14px;
@@ -227,6 +234,22 @@
     .btn-danger {
       background: linear-gradient(135deg, #dc2626, #b91c1c);
       box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.35);
+    }
+
+    /* === CATATAN KAKI KALIGRAFI === */
+    .card-footer-signature {
+      margin-top: 14px;
+      text-align: right;
+      padding-right: 4px;
+    }
+
+    .signature-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #334155;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
     /* Input Token */
@@ -273,7 +296,7 @@
       font-weight: 600;
     }
 
-    /* === HEADER UJIAN AKTIF (CERAH) === */
+    /* === HEADER UJIAN AKTIF === */
     header {
       height: 60px;
       background: #ffffff;
@@ -355,7 +378,7 @@
 </head>
 <body>
 
-  <!-- Latar Belakang Cerah -->
+  <!-- Background Efek Cerah -->
   <div class="bg-mesh"></div>
   <div class="bg-grid"></div>
 
@@ -363,7 +386,7 @@
   <div id="startScreen" class="overlay">
     <div class="card">
       
-      <!-- Ikon Atom Fisika (Warna Vibrant untuk Layar Cerah) -->
+      <!-- Ikon Atom Fisika -->
       <div class="atom-badge">
         <svg class="atom-svg" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="7" fill="#2563eb" />
@@ -398,7 +421,7 @@
         </div>
       </div>
 
-      <!-- Aturan Ujian -->
+      <!-- Aturan Ujian Ringkas -->
       <div class="rules-list">
         <div class="rules-item">
           <span>•</span>
@@ -418,6 +441,11 @@
         <span>Mulai Ujian Fisika</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
+
+      <!-- Catatan Kaki Kaligrafi Pojok Kanan Bawah -->
+      <div class="card-footer-signature">
+        <span class="signature-text">By.Pak Guru Iskandar-GeminiAI</span>
+      </div>
 
     </div>
   </div>
@@ -451,7 +479,6 @@
   <!-- 4. Header Ujian Aktif -->
   <header>
     <div class="header-info">
-      <!-- Mini Atom Icon -->
       <svg width="22" height="22" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="14" fill="#2563eb"/>
         <ellipse cx="50" cy="50" rx="42" ry="16" fill="none" stroke="#0284c7" stroke-width="6" />
@@ -465,7 +492,7 @@
     <div class="timer-badge" id="timer">60:00</div>
   </header>
 
-  <!-- Area Formulir Ujian -->
+  <!-- Area Google Form -->
   <div class="form-container">
     <iframe 
       id="examFrame" 
@@ -496,7 +523,7 @@
     const inputToken = document.getElementById('inputToken');
     const tokenError = document.getElementById('tokenError');
 
-    // 1. Memulai Ujian & Mengaktifkan Layar Penuh
+    // 1. Memulai Ujian & Layar Penuh
     function startExam() {
       const docEl = document.documentElement;
       
@@ -594,14 +621,14 @@
 
     // === DETEKSI KECURANGAN ===
 
-    // Deteksi beralih aplikasi / tab minim
+    // Deteksi keluar tab / minimalkan aplikasi
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && isExamActive) {
         recordViolation("Membuka aplikasi lain atau berganti layar");
       }
     });
 
-    // Deteksi keluar layar penuh
+    // Deteksi keluar mode Fullscreen
     document.addEventListener('fullscreenchange', handleFullscreenExit);
     document.addEventListener('webkitfullscreenchange', handleFullscreenExit);
 
