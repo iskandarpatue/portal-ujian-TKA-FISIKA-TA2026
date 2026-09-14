@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Portal CBT - TKA Fisika 2026</title>
   
-  <!-- Font Kaligrafi Dancing Script & Inter -->
+  <!-- Font Kaligrafi Dancing Script & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -21,14 +21,16 @@
       --text-muted: #64748b;
       --border-color: #e2e8f0;
       --danger: #ef4444;
-      --danger-soft: #fef2f2;
-      --danger-border: #fecaca;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    /* Hanya kunci seleksi teks di elemen dashboard/modal, bukan di area soal */
+    .overlay, header, .card-footer-signature, button {
       -webkit-user-select: none;
       user-select: none;
     }
@@ -45,6 +47,7 @@
       font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg-canvas);
       color: var(--text-main);
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* === BACKGROUND CERAH FISIKA === */
@@ -56,6 +59,7 @@
         radial-gradient(circle at 90% 85%, rgba(224, 231, 255, 0.5) 0%, transparent 45%),
         #f8fafc;
       z-index: 0;
+      pointer-events: none; /* Cegah gangguan klik layar */
     }
 
     .bg-grid {
@@ -66,6 +70,7 @@
         linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
       z-index: 1;
+      pointer-events: none; /* Cegah gangguan klik layar */
     }
 
     /* === OVERLAY MODAL === */
@@ -77,7 +82,7 @@
       align-items: center;
       padding: 20px;
       z-index: 9999;
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       overflow-y: auto;
@@ -92,11 +97,11 @@
       max-width: 420px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.15);
       z-index: 10;
     }
 
-    /* === ANIMASI ATOM (LIGHT MODE) === */
+    /* Animasi Atom */
     .atom-badge {
       width: 74px;
       height: 74px;
@@ -228,7 +233,6 @@
 
     .btn-glow:active {
       transform: scale(0.98);
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
     }
 
     .btn-danger {
@@ -236,7 +240,7 @@
       box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.35);
     }
 
-    /* === CATATAN KAKI KALIGRAFI === */
+    /* Catatan Kaki Kaligrafi */
     .card-footer-signature {
       margin-top: 14px;
       text-align: right;
@@ -249,7 +253,6 @@
       font-weight: 700;
       color: #334155;
       letter-spacing: 0.5px;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
     /* Input Token */
@@ -279,13 +282,11 @@
       font-weight: 800;
       text-transform: uppercase;
       outline: none;
-      transition: border-color 0.2s;
     }
 
     .token-box input:focus {
       border-color: var(--primary);
       background: #ffffff;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
     }
 
     .error-msg {
@@ -338,7 +339,7 @@
       border: 1px solid #bfdbfe;
       padding: 6px 14px;
       border-radius: 20px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-family: ui-monospace, monospace;
       font-size: 0.95rem;
       font-weight: 800;
       color: #1d4ed8;
@@ -357,18 +358,30 @@
       to { opacity: 0.65; }
     }
 
-    /* === AREA FORMULIR === */
+    /* === AREA GOOGLE FORM (DIPERBAIKI UNTUK TOUCH-SCROLL HP) === */
     .form-container {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
       width: 100%;
       height: calc(100% - 60px);
-      position: relative;
       background: #ffffff;
+      z-index: 10;
+      
+      /* Kunci kelancaran scroll di smartphone: */
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-y !important;
     }
 
     iframe {
       width: 100%;
       height: 100%;
+      min-height: 100%;
       border: none;
+      display: block;
     }
 
     .hidden {
@@ -378,7 +391,7 @@
 </head>
 <body>
 
-  <!-- Background Efek Cerah -->
+  <!-- Efek Visual Latar Cerah -->
   <div class="bg-mesh"></div>
   <div class="bg-grid"></div>
 
@@ -401,7 +414,7 @@
       <h1>TKA FISIKA 2026</h1>
       <p class="subtitle">Kerjakan soal dengan cermat, tenang, dan menjunjung sportivitas.</p>
 
-      <!-- Informasi Ujian -->
+      <!-- Panel Info Ujian -->
       <div class="info-grid">
         <div class="info-box">
           <span class="label">MATA PELAJARAN</span>
@@ -421,7 +434,7 @@
         </div>
       </div>
 
-      <!-- Aturan Ujian Ringkas -->
+      <!-- Aturan Ringkas -->
       <div class="rules-list">
         <div class="rules-item">
           <span>•</span>
@@ -442,9 +455,9 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
 
-      <!-- Catatan Kaki Kaligrafi Pojok Kanan Bawah -->
+      <!-- Catatan Kaki Kaligrafi -->
       <div class="card-footer-signature">
-        <span class="signature-text">By.Pak Guru Iskandar-GeminiAI</span>
+        <span class="signature-text">By. Pak Guru Iskandar-Smanbatpan</span>
       </div>
 
     </div>
@@ -492,11 +505,15 @@
     <div class="timer-badge" id="timer">60:00</div>
   </header>
 
-  <!-- Area Google Form -->
+  <!-- Area Google Form Resmi (Mode Semat Aktif) -->
   <div class="form-container">
     <iframe 
       id="examFrame" 
-      src="https://forms.gle/6pYtwMAsddKuzfTN9">
+      src="https://docs.google.com/forms/d/e/1FAIpQLSdIRy1o_dm-ad_jbodazgCqWBhyDbUzwKNTmW4a16hYQv_Sqw/viewform?embedded=true"
+      frameborder="0" 
+      marginheight="0" 
+      marginwidth="0"
+      scrolling="yes">
       Memuat formulir TKA Fisika 2026...
     </iframe>
   </div>
@@ -523,7 +540,7 @@
     const inputToken = document.getElementById('inputToken');
     const tokenError = document.getElementById('tokenError');
 
-    // 1. Memulai Ujian & Layar Penuh
+    // 1. Memulai Ujian & Fullscreen
     function startExam() {
       const docEl = document.documentElement;
       
@@ -586,7 +603,7 @@
         tokenError.classList.add('hidden');
         warningModal.classList.add('hidden');
 
-        // Balikkan ke fullscreen
+        // Kembalikan ke layar penuh
         const docEl = document.documentElement;
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
           if (docEl.requestFullscreen) {
@@ -621,14 +638,14 @@
 
     // === DETEKSI KECURANGAN ===
 
-    // Deteksi keluar tab / minimalkan aplikasi
+    // Deteksi beralih aplikasi / tab minim
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && isExamActive) {
         recordViolation("Membuka aplikasi lain atau berganti layar");
       }
     });
 
-    // Deteksi keluar mode Fullscreen
+    // Deteksi keluar layar penuh
     document.addEventListener('fullscreenchange', handleFullscreenExit);
     document.addEventListener('webkitfullscreenchange', handleFullscreenExit);
 
@@ -639,7 +656,7 @@
       }
     }
 
-    // Blokir klik kanan / tahan layar
+    // Blokir klik kanan
     document.addEventListener('contextmenu', (e) => e.preventDefault());
   </script>
 </body>
