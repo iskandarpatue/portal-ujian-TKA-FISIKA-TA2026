@@ -653,7 +653,7 @@
         }
 
         timeRemaining--;
-        const minutes = Math.floor(timeRemaining / 60);
+        const minutes = Math.floor(timeRemaining / 75);
         const seconds = timeRemaining % 60;
         timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
