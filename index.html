@@ -29,7 +29,6 @@
       padding: 0;
     }
 
-    /* Hanya kunci seleksi teks di elemen dashboard/modal, bukan di area soal */
     .overlay, header, .card-footer-signature, button {
       -webkit-user-select: none;
       user-select: none;
@@ -50,7 +49,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* === BACKGROUND CERAH FISIKA === */
+    /* Background Cerah Fisika */
     .bg-mesh {
       position: absolute;
       inset: 0;
@@ -59,7 +58,7 @@
         radial-gradient(circle at 90% 85%, rgba(224, 231, 255, 0.5) 0%, transparent 45%),
         #f8fafc;
       z-index: 0;
-      pointer-events: none; /* Cegah gangguan klik layar */
+      pointer-events: none;
     }
 
     .bg-grid {
@@ -70,10 +69,10 @@
         linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
       z-index: 1;
-      pointer-events: none; /* Cegah gangguan klik layar */
+      pointer-events: none;
     }
 
-    /* === OVERLAY MODAL === */
+    /* Overlay & Modal */
     .overlay {
       position: fixed;
       inset: 0;
@@ -92,16 +91,16 @@
       position: relative;
       background: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 26px 22px 20px 22px;
+      padding: 26px 22px 18px 22px;
       border-radius: 22px;
       max-width: 420px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.15);
+      box-shadow: 0 20px 45px -10px rgba(37, 99, 235, 0.12);
       z-index: 10;
     }
 
-    /* Animasi Atom */
+    /* Animasi Atom Fisika */
     .atom-badge {
       width: 74px;
       height: 74px;
@@ -180,7 +179,7 @@
     }
 
     .info-box span.value {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 700;
       color: #1e293b;
       display: flex;
@@ -188,7 +187,7 @@
       gap: 5px;
     }
 
-    /* Rules List */
+    /* Aturan Ujian */
     .rules-list {
       background: #fff1f2;
       border: 1px dashed #fecdd3;
@@ -208,9 +207,7 @@
       line-height: 1.35;
     }
 
-    .rules-item:last-child {
-      margin-bottom: 0;
-    }
+    .rules-item:last-child { margin-bottom: 0; }
 
     /* Tombol */
     .btn-glow {
@@ -231,20 +228,30 @@
       gap: 8px;
     }
 
-    .btn-glow:active {
-      transform: scale(0.98);
-    }
+    .btn-glow:active { transform: scale(0.98); }
 
     .btn-danger {
       background: linear-gradient(135deg, #dc2626, #b91c1c);
       box-shadow: 0 10px 20px -5px rgba(220, 38, 38, 0.35);
     }
 
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      padding: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
     /* Catatan Kaki Kaligrafi */
     .card-footer-signature {
       margin-top: 14px;
       text-align: right;
-      padding-right: 4px;
+      padding-right: 2px;
     }
 
     .signature-text {
@@ -297,7 +304,7 @@
       font-weight: 600;
     }
 
-    /* === HEADER UJIAN AKTIF === */
+    /* Header Ujian */
     header {
       height: 60px;
       background: #ffffff;
@@ -358,7 +365,7 @@
       to { opacity: 0.65; }
     }
 
-    /* === AREA GOOGLE FORM (DIPERBAIKI UNTUK TOUCH-SCROLL HP) === */
+    /* Container Google Form (Bebas Macet di Layar HP) */
     .form-container {
       position: absolute;
       top: 60px;
@@ -369,8 +376,6 @@
       height: calc(100% - 60px);
       background: #ffffff;
       z-index: 10;
-      
-      /* Kunci kelancaran scroll di smartphone: */
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch !important;
       touch-action: pan-y !important;
@@ -391,15 +396,12 @@
 </head>
 <body>
 
-  <!-- Efek Visual Latar Cerah -->
   <div class="bg-mesh"></div>
   <div class="bg-grid"></div>
 
   <!-- 1. Beranda Ujian / Start Screen -->
   <div id="startScreen" class="overlay">
     <div class="card">
-      
-      <!-- Ikon Atom Fisika -->
       <div class="atom-badge">
         <svg class="atom-svg" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="7" fill="#2563eb" />
@@ -414,7 +416,6 @@
       <h1>TKA FISIKA 2026</h1>
       <p class="subtitle">Kerjakan soal dengan cermat, tenang, dan menjunjung sportivitas.</p>
 
-      <!-- Panel Info Ujian -->
       <div class="info-grid">
         <div class="info-box">
           <span class="label">MATA PELAJARAN</span>
@@ -434,7 +435,6 @@
         </div>
       </div>
 
-      <!-- Aturan Ringkas -->
       <div class="rules-list">
         <div class="rules-item">
           <span>•</span>
@@ -442,11 +442,11 @@
         </div>
         <div class="rules-item">
           <span>•</span>
-          <span>Dilarang beralih tab, membalas chat, atau keluar aplikasi.</span>
+          <span>Dilarang beralih tab, membalas chat, atau keluar browser.</span>
         </div>
         <div class="rules-item">
           <span>•</span>
-          <span>Ujian terkunci jika melanggar dan memerlukan <b>Token Pengawas</b>.</span>
+          <span>Jika melanggar 3x, <b>perangkat terkunci permanen</b> dan tidak bisa dibuka kembali.</span>
         </div>
       </div>
 
@@ -455,15 +455,13 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
 
-      <!-- Catatan Kaki Kaligrafi -->
       <div class="card-footer-signature">
         <span class="signature-text">By. Pak Guru Iskandar-Smanbatpan</span>
       </div>
-
     </div>
   </div>
 
-  <!-- 2. Modal Peringatan Pelanggaran (Wajib Token) -->
+  <!-- 2. Modal Peringatan Sementara (1x & 2x Pelanggaran) -->
   <div id="warningModal" class="overlay hidden">
     <div class="card" style="border-color: #fca5a5;">
       <div style="font-size: 2.2rem; margin-bottom: 6px;">⚠️</div>
@@ -480,12 +478,26 @@
     </div>
   </div>
 
-  <!-- 3. Modal Ujian Dihentikan Total -->
+  <!-- 3. Modal KUNCI PERMANEN PERANGKAT (Auto-Block) -->
   <div id="lockScreen" class="overlay hidden">
     <div class="card" style="border-color: #fca5a5;">
-      <div style="font-size: 2.2rem; margin-bottom: 6px;">🛑</div>
-      <h1 style="color: #dc2626; font-size: 1.3rem;">AKSES DITUTUP</h1>
-      <p id="lockMessage" class="subtitle" style="margin-top: 8px;">Ujian Anda telah dihentikan otomatis oleh sistem.</p>
+      <div style="font-size: 2.5rem; margin-bottom: 6px;">🛑</div>
+      <h1 style="color: #dc2626; font-size: 1.3rem;">PERANGKAT DIKUNCI</h1>
+      <p id="lockMessage" class="subtitle" style="margin-top: 8px; font-weight: 600; color: #334155;">
+        Akses ujian di perangkat ini telah dihentikan secara permanen oleh sistem.
+      </p>
+      <p style="font-size: 0.75rem; color: #94a3b8; line-height: 1.4;">
+        Membuka kembali link ini tidak akan membuka ujian. Silakan lapor langsung kepada pengawas di ruangan.
+      </p>
+
+      <!-- Panel Khusus Pengawas untuk Buka Kunci Perangkat -->
+      <div id="proctorResetBox" class="hidden" style="margin-top: 15px; border-top: 1px dashed #cbd5e1; padding-top: 12px;">
+        <input type="text" id="resetTokenInput" placeholder="TOKEN PENGAWAS" style="width:100%; padding:8px; text-align:center; font-weight:bold; margin-bottom:6px; text-transform:uppercase;">
+        <button class="btn-glow" style="padding:10px; font-size:0.85rem;" onclick="resetDeviceLock()">Reset Kunci Perangkat</button>
+        <p id="resetError" class="error-msg hidden">Token salah!</p>
+      </div>
+
+      <button class="btn-secondary" onclick="toggleProctorReset()">Opsi Pengawas</button>
     </div>
   </div>
 
@@ -505,24 +517,19 @@
     <div class="timer-badge" id="timer">60:00</div>
   </header>
 
-  <!-- Area Google Form Resmi (Mode Semat Aktif) -->
-  <div class="form-container">
-    <iframe 
-      id="examFrame" 
-      src="https://docs.google.com/forms/d/e/1FAIpQLSdIRy1o_dm-ad_jbodazgCqWBhyDbUzwKNTmW4a16hYQv_Sqw/viewform?embedded=true"
-      frameborder="0" 
-      marginheight="0" 
-      marginwidth="0"
-      scrolling="yes">
-      Memuat formulir TKA Fisika 2026...
-    </iframe>
+  <!-- Area Google Form Resmi Fisika -->
+  <div class="form-container" id="frameContainer">
+    <!-- Iframe dimuat secara dinamis melalui JavaScript jika perangkat belum terkunci -->
   </div>
 
   <script>
     // === KONFIGURASI SISTEM UJIAN ===
-    const PROCTOR_TOKEN = "TKAFISIKA2026"; 
-    let examDurationMinutes = 60;          
-    const maxViolations = 3;               
+    const EXAM_ID = "TKA_FISIKA_2026"; // ID unik ujian Fisika
+    const PROCTOR_TOKEN = "TKAFISIKA2026";
+    const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdIRy1o_dm-ad_jbodazgCqWBhyDbUzwKNTmW4a16hYQv_Sqw/viewform?embedded=true";
+    
+    let examDurationMinutes = 60;
+    const maxViolations = 3;
 
     let timeRemaining = examDurationMinutes * 60;
     let violationCount = 0;
@@ -539,11 +546,93 @@
     const warningText = document.getElementById('warningText');
     const inputToken = document.getElementById('inputToken');
     const tokenError = document.getElementById('tokenError');
+    const frameContainer = document.getElementById('frameContainer');
 
-    // 1. Memulai Ujian & Fullscreen
+    // ==========================================
+    // 1. CEK STATUS KUNCI PERANGKAT (LOCAL STORAGE)
+    // ==========================================
+    function checkDeviceLock() {
+      const lockData = localStorage.getItem("CBT_LOCK_" + EXAM_ID);
+      if (lockData) {
+        const parsed = JSON.parse(lockData);
+        showPermanentLockScreen(parsed.reason || "Perangkat Anda telah terkunci secara permanen.");
+        return true;
+      }
+      return false;
+    }
+
+    // Jalankan pemeriksaan awal sebelum halaman dirender
+    if (!checkDeviceLock()) {
+      frameContainer.innerHTML = `
+        <iframe 
+          id="examFrame" 
+          src="${FORM_URL}"
+          frameborder="0" 
+          marginheight="0" 
+          marginwidth="0"
+          scrolling="yes">
+          Memuat formulir TKA Fisika 2026...
+        </iframe>
+      `;
+    }
+
+    // ==========================================
+    // 2. EKSEKUSI KUNCI PERANGKAT PERMANEN
+    // ==========================================
+    function lockDevicePermanently(reason) {
+      isExamActive = false;
+      clearInterval(timerInterval);
+
+      // Simpan status kunci permanen di memori HP
+      localStorage.setItem("CBT_LOCK_" + EXAM_ID, JSON.stringify({
+        locked: true,
+        reason: reason,
+        timestamp: new Date().toISOString()
+      }));
+
+      // Bersihkan formulir dari layar
+      frameContainer.innerHTML = "";
+      showPermanentLockScreen(reason);
+    }
+
+    function showPermanentLockScreen(message) {
+      startScreen.classList.add('hidden');
+      warningModal.classList.add('hidden');
+      lockMessage.textContent = message;
+      lockScreen.classList.remove('hidden');
+
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    // ==========================================
+    // 3. RESET KUNCI PERANGKAT OLEH PENGAWAS
+    // ==========================================
+    function toggleProctorReset() {
+      const box = document.getElementById('proctorResetBox');
+      box.classList.toggle('hidden');
+    }
+
+    function resetDeviceLock() {
+      const input = document.getElementById('resetTokenInput').value.trim().toUpperCase();
+      const err = document.getElementById('resetError');
+      
+      if (input === PROCTOR_TOKEN) {
+        // Hapus status kunci dari storage HP murid
+        localStorage.removeItem("CBT_LOCK_" + EXAM_ID);
+        alert("Kunci perangkat berhasil dibuka oleh pengawas. Halaman akan dimuat ulang.");
+        location.reload();
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
+
+    // ==========================================
+    // 4. ALUR UJIAN AKTIF
+    // ==========================================
     function startExam() {
       const docEl = document.documentElement;
-      
       if (docEl.requestFullscreen) {
         docEl.requestFullscreen().catch(() => {});
       } else if (docEl.webkitRequestFullscreen) {
@@ -555,21 +644,18 @@
       startTimer();
     }
 
-    // 2. Logika Hitung Mundur Waktu
     function startTimer() {
       timerInterval = setInterval(() => {
         if (timeRemaining <= 0) {
           clearInterval(timerInterval);
-          finishExam("Waktu pengerjaan ujian telah berakhir!");
+          lockDevicePermanently("Waktu pengerjaan ujian telah berakhir!");
           return;
         }
 
         timeRemaining--;
         const minutes = Math.floor(timeRemaining / 60);
         const seconds = timeRemaining % 60;
-
-        timerDisplay.textContent = 
-          `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
         if (timeRemaining <= 300) {
           timerDisplay.classList.add('timer-warning');
@@ -577,7 +663,6 @@
       }, 1000);
     }
 
-    // 3. Pencatatan Pelanggaran
     function recordViolation(reason) {
       if (!isExamActive) return;
 
@@ -585,25 +670,21 @@
       violationText.textContent = `Pelanggaran: ${violationCount}/${maxViolations}`;
 
       if (violationCount >= maxViolations) {
-        finishExam(`Ujian Dihentikan! Anda telah mencapai batas maksimal (${maxViolations}x) pelanggaran.`);
+        lockDevicePermanently(`Akses Dihentikan! Anda telah mencapai batas toleransi (${maxViolations}x) pelanggaran.`);
       } else {
         warningText.innerHTML = `Terdeteksi: <b>${reason}</b>.<br><br>Pelanggaran ke-<b>${violationCount}</b> dari ${maxViolations}. Panggil pengawas untuk membuka kunci kembali.`;
-        
         inputToken.value = "";
         tokenError.classList.add('hidden');
         warningModal.classList.remove('hidden');
       }
     }
 
-    // 4. Verifikasi Token Pengawas
     function unlockExam() {
       const enteredToken = inputToken.value.trim().toUpperCase();
-
       if (enteredToken === PROCTOR_TOKEN) {
         tokenError.classList.add('hidden');
         warningModal.classList.add('hidden');
 
-        // Kembalikan ke layar penuh
         const docEl = document.documentElement;
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
           if (docEl.requestFullscreen) {
@@ -619,33 +700,15 @@
       }
     }
 
-    // 5. Menghentikan Ujian Permanen
-    function finishExam(message) {
-      isExamActive = false;
-      clearInterval(timerInterval);
-      warningModal.classList.add('hidden');
-      
-      const frame = document.getElementById('examFrame');
-      if (frame) frame.remove();
-
-      lockMessage.textContent = message;
-      lockScreen.classList.remove('hidden');
-
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
-      }
-    }
-
-    // === DETEKSI KECURANGAN ===
-
-    // Deteksi beralih aplikasi / tab minim
+    // ==========================================
+    // 5. DETEKSI CURANG (EVENT LISTENERS)
+    // ==========================================
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && isExamActive) {
         recordViolation("Membuka aplikasi lain atau berganti layar");
       }
     });
 
-    // Deteksi keluar layar penuh
     document.addEventListener('fullscreenchange', handleFullscreenExit);
     document.addEventListener('webkitfullscreenchange', handleFullscreenExit);
 
@@ -656,7 +719,6 @@
       }
     }
 
-    // Blokir klik kanan
     document.addEventListener('contextmenu', (e) => e.preventDefault());
   </script>
 </body>
